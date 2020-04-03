@@ -21,6 +21,7 @@ var createMenu;
     curtain.style.width = "100vw";
     curtain.style.top = "0";
     curtain.style.left = "0";
+    curtain.style.zIndex = "2";
   }
 
   function setMenuItemStyle(item) {
@@ -30,13 +31,14 @@ var createMenu;
     item.style.paddingLeft = "8px";
   }
   function setMenuStyle(menu) {
+    menu.style.position = "abosulte";
     menu.style.minWidth = "200px";
     menu.style.backgroundColor = "white";
-    menu.style.position = "abosulte";
     menu.style.borderRadius = "8px";
     menu.style.boxShadow = "rgba(0, 0, 0, 0.75) -1px 0px 24px -11px";
     menu.style.fontFamily = "Roboto";
     menu.style.fontSize = "14px";
+    menu.style.zIndex = "4";
   }
 
   function createCurtain() {
@@ -110,4 +112,3 @@ var createMenu;
 })();
 
 module.exports.createMenu = createMenu;
-module.exports.setUpMenu = setUpMenu;
