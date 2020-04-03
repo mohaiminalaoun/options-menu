@@ -31,7 +31,7 @@ var createMenu;
     item.style.paddingLeft = "8px";
   }
   function setMenuStyle(menu) {
-    menu.style.position = "abosulte";
+    menu.style.position = "absolute";
     menu.style.minWidth = "200px";
     menu.style.backgroundColor = "white";
     menu.style.borderRadius = "8px";
