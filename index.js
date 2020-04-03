@@ -1,4 +1,12 @@
 var createMenu;
+var setUpMenu = function() {
+  var link = document.createElement("link");
+  // set the attributes for link element
+  link.rel = "stylesheet";
+  link.type = "text/css";
+  link.href = "style.css";
+  document.getElementsByTagName("HEAD")[0].appendChild(link);
+};
 
 (function() {
   var link = document.createElement("link");
@@ -82,3 +90,4 @@ var createMenu;
 })();
 
 module.exports.createMenu = createMenu;
+module.exports.setUpMenu = setUpMenu;
