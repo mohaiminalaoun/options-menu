@@ -4,7 +4,7 @@ Test code for floating options menu.
 
 # Installation
 
-`npm i cool-options-menu --save`
+`npm i floating-options-menu --save`
 
 Then ....
 
