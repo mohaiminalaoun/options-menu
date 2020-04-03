@@ -1,30 +1,48 @@
 var createMenu;
-var setUpMenu = function() {
-  var link = document.createElement("link");
-  // set the attributes for link element
-  link.rel = "stylesheet";
-  link.type = "text/css";
-  link.href = "style.css";
-  document.getElementsByTagName("HEAD")[0].appendChild(link);
-};
+// var setUpMenu = function() {
+//   var link = document.createElement("link");
+//   // set the attributes for link element
+//   link.rel = "stylesheet";
+//   link.type = "text/css";
+//   link.href = "style.css";
+//   document.getElementsByTagName("HEAD")[0].appendChild(link);
+// };
 
 (function() {
-  var link = document.createElement("link");
-  // set the attributes for link element
-  link.rel = "stylesheet";
-  link.type = "text/css";
-  link.href = "style.css";
-  document.getElementsByTagName("HEAD")[0].appendChild(link);
-
   let position;
 
   /*  setTimeout(function() {
     createMenu();
   }, 2000); */
 
+  function setCurtainStyle(curtain) {
+    curtain.style.position = "absolute";
+    curtain.style.height = "100vh";
+    curtain.style.width = "100vw";
+    curtain.style.top = "0";
+    curtain.style.left = "0";
+  }
+
+  function setMenuItemStyle(item) {
+    item.style.height = "40px";
+    item.style.lineHeight = "40px";
+    item.style.border = "1px solid #3e3e3e14";
+    item.style.paddingLeft = "8px";
+  }
+  function setMenuStyle(menu) {
+    menu.style.minWidth = "200px";
+    menu.style.backgroundColor = "white";
+    menu.style.position = "abosulte";
+    menu.style.borderRadius = "8px";
+    menu.style.boxShadow = "rgba(0, 0, 0, 0.75) -1px 0px 24px -11px";
+    menu.style.fontFamily = "Roboto";
+    menu.style.fontSize = "14px";
+  }
+
   function createCurtain() {
     var curtain = document.createElement("div");
     curtain.classList.add("curtain");
+    setCurtainStyle(curtain);
     document.body.appendChild(curtain);
     return curtain;
   }
@@ -59,11 +77,13 @@ var setUpMenu = function() {
       }
     ];
     var menu = document.createElement("div");
+    setMenuStyle(menu);
     menu.classList.add("menu");
     options.forEach(function(item) {
       var div = document.createElement("div");
       div.innerText = item.text;
       div.classList.add("menu-item");
+      setMenuItemStyle(div);
       menu.appendChild(div);
       div.onclick = function() {
         removeMenu(menu, curtain);
