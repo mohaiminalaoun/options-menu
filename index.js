@@ -39,8 +39,8 @@ var createMenu;
     menu.style.fontFamily = "Roboto";
     menu.style.fontSize = "14px";
     menu.style.zIndex = "4";
-    menu.style.top = evt.clientX + "px";
-    menu.style.left = evt.clientY + "px";
+    menu.style.top = evt.clientY + "px";
+    menu.style.left = evt.clientX + "px";
   }
 
   function createCurtain() {
