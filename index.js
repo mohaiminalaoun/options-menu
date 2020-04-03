@@ -30,7 +30,7 @@ var createMenu;
     item.style.border = "1px solid #3e3e3e14";
     item.style.paddingLeft = "8px";
   }
-  function setMenuStyle(menu) {
+  function setMenuStyle(evt, menu) {
     menu.style.position = "absolute";
     menu.style.minWidth = "200px";
     menu.style.backgroundColor = "white";
@@ -39,6 +39,8 @@ var createMenu;
     menu.style.fontFamily = "Roboto";
     menu.style.fontSize = "14px";
     menu.style.zIndex = "4";
+    menu.style.top = evt.clientX;
+    menu.style.left = evt.clientY;
   }
 
   function createCurtain() {
@@ -79,7 +81,7 @@ var createMenu;
       }
     ];
     var menu = document.createElement("div");
-    setMenuStyle(menu);
+    setMenuStyle(evt, menu);
     menu.classList.add("menu");
     options.forEach(function(item) {
       var div = document.createElement("div");
@@ -92,16 +94,10 @@ var createMenu;
         item.fn();
       };
     });
-    setStyle(evt, menu);
     document.body.appendChild(menu);
 
     curtain.onclick = removeMenu.bind(this, menu, curtain);
   };
-
-  function setStyle(evt, menu) {
-    menu.style.top = evt.clientX;
-    menu.style.left = evt.clientY;
-  }
 
   function removeMenu(menu, curtain) {
     document.body.removeChild(menu);
