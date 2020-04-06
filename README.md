@@ -9,7 +9,7 @@ Small package to create a floating options/context menu.
 Then ....
 
 ```
-import {createMenu} from 'cool-options-menu';
+import {createMenu} from 'floating-options-menu';
 
 element.onClick((evt) => {
   createMenu(evt, [
