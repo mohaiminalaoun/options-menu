@@ -1,4 +1,3 @@
-var createMenu;
 (function() {
   let position;
 
@@ -11,14 +10,22 @@ var createMenu;
     curtain.style.zIndex = "2";
   }
 
-  function setMenuItemStyle(item) {
+  function setMenuItemStyle(item, isDisabled) {
     item.style.height = "40px";
     item.style.lineHeight = "40px";
     item.style.whiteSpace = "nowrap";
     item.style.overflow = "hidden";
     item.style.textOverflow = "ellipsis";
-    item.style.border = "1px solid #3e3e3e14";
     item.style.paddingLeft = "8px";
+    item.style.opacity = isDisabled ? 0.4 : 1;
+  }
+
+  function setDividerStyle(item) {
+    item.classList.add('_menu-divider');
+    item.style.height = '1px'
+    item.style.backgroundColor = '#ebebeb';
+    item.style.marginTop = '3px';
+    item.style.marginBottom = '3px';
   }
 
   function setMenuStyle(evt, menu, numOptions, dim) {
@@ -35,15 +42,16 @@ var createMenu;
         : "rgba(0, 0, 0, 0.75) -1px 0px 24px -11px";
     menu.style.fontSize = "14px";
     menu.style.zIndex = "4";
-    confirmPosition(menu, { y: evt.clientY, x: evt.clientX }, numOptions);
+    confirmPosition(menu, { y: evt.clientY, x: evt.clientX }, numOptions, dim);
   }
 
-  function confirmPosition(menu, pos, num) {
+  function confirmPosition(menu, pos, num, dimensions) {
     // assuming 200px width
-    var screenWidth = window.screen.width,
-      screenHeight = window.screen.height;
-    if (pos.x + 200 > screenWidth) {
-      menu.style.left = pos.x - 200 + "px";
+    var screenWidth = window.innerWidth || (document.documentElement && document.documentElement.clientWidth) || window.screen.width,
+      screenHeight = window.innerHeight || (document.documentElement && document.documentElement.clientHeight) || window.screen.height,
+      curWidth = ~~(dimensions.width || dimensions.minWidth || 200);
+    if ((pos.x + curWidth) > screenWidth) {
+      menu.style.left = pos.x - curWidth + "px";
     } else {
       menu.style.left = pos.x + "px";
     }
@@ -93,31 +101,43 @@ var createMenu;
       }
     ];
     var menu = document.createElement("div");
-    setMenuStyle(evt, menu, options.length, dim);
+    setMenuStyle(evt, menu, options.filter(function(item){
+      return !item.divider;
+    }).length, dim);
     menu.classList.add("_floating-menu-ctr");
     options.forEach(function(item) {
       var div = document.createElement("div");
+      if (item.divider) {
+        setDividerStyle(div);
+        menu.appendChild(div);
+        return;
+      }
       div.innerText = item.text;
       div.classList.add("_floating-menu-item");
-      setMenuItemStyle(div);
+      if (item.classes) {
+        div.classList.add(item.classes);
+      }
+      setMenuItemStyle(div, item.optionDisabled);
       menu.appendChild(div);
       div.onclick = function() {
         removeMenu(menu, curtain);
-        item.fn();
+        item.fn && item.fn();
       };
-      div.onmouseover = function() {
-        div.style.backgroundColor =
-          dim && dim.hoverBgColor ? dim.hoverBgColor : "#3e3e3e14";
-        div.style.color =
-          dim && dim.hoverFontColor ? dim.hoverFontColor : "#265782";
-        div.style.cursor = "pointer";
-        div.classList.add("_floating-menuItem-hover");
-      };
-      div.onmouseleave = function() {
-        div.style.backgroundColor = "transparent";
-        div.style.color = "black";
-        div.classList.remove("_floating-menuItem-hover");
-      };
+      if (!item.hoverDisabled) {
+        div.onmouseover = function() {
+          div.style.backgroundColor =
+            dim && dim.hoverBgColor ? dim.hoverBgColor : "#3e3e3e14";
+          div.style.color =
+            dim && dim.hoverFontColor ? dim.hoverFontColor : "#265782";
+          div.style.cursor = "pointer";
+          div.classList.add("_floating-menuItem-hover");
+        };
+        div.onmouseleave = function() {
+          div.style.backgroundColor = "transparent";
+          div.style.color = "black";
+          div.classList.remove("_floating-menuItem-hover");
+        };
+      }
     });
     document.body.appendChild(menu);
 
@@ -129,7 +149,6 @@ var createMenu;
     document.body.removeChild(curtain);
   }
 
-  window.createMenu = createMenu;
 })();
 
 module.exports.createMenu = createMenu;
