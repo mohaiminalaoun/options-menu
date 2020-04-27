@@ -11,6 +11,7 @@
   }
 
   function setMenuItemStyle(item, isDisabled) {
+    item.style.position = "relative";
     item.style.height = "40px";
     item.style.lineHeight = "40px";
     item.style.whiteSpace = "nowrap";
@@ -70,6 +71,40 @@
     return curtain;
   }
 
+  function setIconStyle(div, item, anyIconAlignLeft) {
+    var icon = document.createElement('div');
+    div.appendChild(icon);
+    item.icon = item.icon || {}; // for menu items with no icon
+    icon.classList.add('icon');
+    icon.classList.add(icon.classes);
+    icon.style.backgroundImage = "url('" + item.icon.src + "')";
+    icon.style.backgroundSize = 'contain';
+    icon.style.backgroundRepeat = 'no-repeat';
+    icon.style.position = 'absolute';
+    icon.style.top = '10px';
+    if (item.icon.alignment === 'right') {
+      icon.style.right = item.icon.paddingRight ? item.icon.paddingRight+'px' : '8px';
+      if (anyIconAlignLeft) {
+        var emptyIcon = icon.cloneNode(true);
+        div.appendChild(emptyIcon);
+        emptyIcon.style.opacity = '0';
+        emptyIcon.style.left = item.icon.paddingLeft ? item.icon.paddingLeft+'px' : '8px';
+        emptyIcon.style.height = item.icon.height ? item.icon.height + 'px':'20px';
+        emptyIcon.style.width = item.icon.height ? item.icon.height + 'px':'20px';
+        div.style.paddingLeft = item.textPadding? item.textPadding + 'px' : (2 * (8) + parseInt(emptyIcon.style.width))+'px';
+      }
+    }
+    else {
+      icon.style.left = item.icon.paddingLeft ? item.icon.paddingLeft+'px' : '8px';
+    }
+
+
+
+    icon.style.height = item.icon.height ? item.icon.height + 'px':'20px';
+    icon.style.width = item.icon.height ? item.icon.height + 'px':'20px';
+    div.style.paddingLeft = item.textPadding? item.textPadding + 'px' : (2 * parseInt(icon.style.left)+parseInt(icon.style.width))+'px';
+  }
+
   createMenu = function createMenu(evt, options, dim) {
     dim = dim || { width: 200 };
     evt = evt || { clientX: 50, clientY: 200 };
@@ -105,8 +140,12 @@
       return !item.divider;
     }).length, dim);
     menu.classList.add("_floating-menu-ctr");
+    var anyIconAlignLeft = options.some(function(item){
+      return item.icon && item.icon.alignment && item.icon.alignment === 'left';
+    });
     options.forEach(function(item) {
       var div = document.createElement("div");
+
       if (item.divider) {
         setDividerStyle(div);
         menu.appendChild(div);
@@ -118,6 +157,12 @@
         div.classList.add(item.classes);
       }
       setMenuItemStyle(div, item.optionDisabled);
+
+      if (item.icon) {
+        setIconStyle(div, item, anyIconAlignLeft);
+      } else if (anyIconAlignLeft) {
+        setIconStyle(div, item, anyIconAlignLeft);
+      }
       menu.appendChild(div);
       div.onclick = function() {
         removeMenu(menu, curtain);
